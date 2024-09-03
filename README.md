@@ -1,3 +1,4 @@
-# Lama Dev Chat App Starter template
+# reactChat 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+reactChat is chating app buiilt using Reactjs and Fiebase. Feel free to create an account and ask your friends to join too. 
+
