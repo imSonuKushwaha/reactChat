@@ -1,8 +1,36 @@
 import React from "react";
 import "./Details.css";
-import { auth } from "../../lib/Firebase";
+import { auth, db } from "../../lib/Firebase";
+import useUserStore from "../../lib/UserStore";
+import useChatStore from "../../lib/chatStore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 function Details() {
+  const {
+    chatId,
+    user,
+    isCurrentUserBlocked,
+    isReceiverBlocked,
+    changeBlocked,
+  } = useChatStore();
+  const { currentUser } = useUserStore();
+  const handleBlock = async () => {
+    if (!user) return;
+
+    const userDocRef = doc(db, "users", currentUser.id);
+
+    try {
+      await updateDoc(userDocRef, {
+        blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id),
+      });
+      changeBlocked();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  console.log(user, "user");
+
   const photoItems = (
     <div className="photoItem">
       <div className="photoDetail">
@@ -18,8 +46,8 @@ function Details() {
   return (
     <div className="detail">
       <div className="user">
-        <img src="./avatar.png" alt="" />
-        <h3>Jane Doe</h3>
+        <img src={user?.avatar || "./avatar.png"} alt="" />
+        <h3>{user?.username}</h3>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing </p>
       </div>
       <div className="info">
@@ -56,7 +84,13 @@ function Details() {
             <img src="./arrowUp.png" alt="" />
           </div>
         </div>
-        <button>Block User</button>
+        <button onClick={handleBlock}>
+          {isCurrentUserBlocked
+            ? "You are Blocked!"
+            : isReceiverBlocked
+            ? "user Blocked"
+            : "Block User"}
+        </button>
         <button className="logout" onClick={() => auth.signOut()}>
           Logout
         </button>
