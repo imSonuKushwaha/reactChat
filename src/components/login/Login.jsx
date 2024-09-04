@@ -8,6 +8,7 @@ import {
 import { auth, db } from "../../lib/Firebase";
 import { doc, setDoc } from "firebase/firestore";
 import upload from "../../lib/Upload";
+import avatar from "../../img/avatar.png";
 
 const Login = () => {
   const [avatar, setAvatar] = useState({
@@ -93,7 +94,7 @@ const Login = () => {
         <h3>Create an Account</h3>
         <form onSubmit={handleRegister}>
           <label htmlFor="file">
-            <img src={avatar.url || "./avatar.png"} alt="" />
+            <img src={avatar.url || avatar} alt="" />
             Upload an Image
           </label>
           <input

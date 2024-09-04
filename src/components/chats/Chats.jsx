@@ -12,6 +12,14 @@ import {
 import { db } from "../../lib/Firebase";
 import useChatStore from "../../lib/chatStore";
 import upload from "../../lib/Upload";
+import avatar from "../../img/avatar.png";
+import phone from "../../img/phone.png";
+import video from "../../img/video.png";
+import info from "../../img/info.png";
+import image from "../../img/img.png";
+import camera from "../../img/camera.png";
+import mic from "../../img/mic.png";
+import emoji from "../../img/emoji.png";
 
 const Chats = () => {
   const [chat, setChat] = useState();
@@ -110,16 +118,16 @@ const Chats = () => {
     <div className="chat">
       <div className="top">
         <div className="user">
-          <img src={user?.avatar || "./avatar.png"} alt="" />
+          <img src={user?.avatar || avatar} alt="" />
           <div className="texts">
             <span>{user?.username}</span>
             <p>Lorem ipsum dolor sit amet, consectetur </p>
           </div>
         </div>
         <div className="icons">
-          <img src="./phone.png" alt="" />
-          <img src="./video.png" alt="" />
-          <img src="./info.png" alt="" />
+          <img src={phone} alt="" />
+          <img src={video} alt="" />
+          <img src={info} alt="" />
         </div>
       </div>
       <div className="center">
@@ -149,7 +157,7 @@ const Chats = () => {
       <div className="bottom">
         <div className="icons">
           <label htmlFor="file">
-            <img src="./img.png" alt="" />
+            <img src={image} alt="" />
           </label>
           <input
             type="file"
@@ -158,14 +166,16 @@ const Chats = () => {
             onChange={handleImg}
             disabled={isCurrentUserBlocked || isReceiverBlocked}
           />
-          <img src="./camera.png" alt="" />
-          <img src="./mic.png" alt="" />
+          <img src={camera} alt="" />
+          <img src={mic} alt="" />
         </div>
         <input
           type="text"
           value={text}
           placeholder={
-            isCurrentUserBlocked || isReceiverBlocked ? "you cannot send a message" : "Type a message..."
+            isCurrentUserBlocked || isReceiverBlocked
+              ? "you cannot send a message"
+              : "Type a message..."
           }
           onChange={(e) => {
             setText(e.target.value);
@@ -174,7 +184,7 @@ const Chats = () => {
         />
         <div className="emoji">
           <img
-            src="./emoji.png"
+            src={emoji}
             alt=""
             onClick={() => {
               setOpen(!open);
