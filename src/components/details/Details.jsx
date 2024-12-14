@@ -33,7 +33,7 @@ function Details() {
     }
   };
 
-  console.log(user, "user");
+  // console.log(user, "user");
 
   const photoItems = (
     <div className="photoItem">

@@ -8,7 +8,8 @@ import {
 import { auth, db } from "../../lib/Firebase";
 import { doc, setDoc } from "firebase/firestore";
 import upload from "../../lib/Upload";
-import avatar from "../../img/avatar.png";
+import avatarPNG from "../../img/avatar.png";
+import { signOut } from "firebase/auth";
 
 const Login = () => {
   const [avatar, setAvatar] = useState({
@@ -50,11 +51,13 @@ const Login = () => {
     const formData = new FormData(e.target);
 
     const { username, email, password } = Object.fromEntries(formData);
-
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
 
-      const imgUrl = await upload(avatar.file);
+      let imgUrl = null;
+      if (avatar?.file) {
+        imgUrl = await upload(avatar.file);
+      }
 
       await setDoc(doc(db, "users", res.user.uid), {
         username,
@@ -67,6 +70,9 @@ const Login = () => {
       await setDoc(doc(db, "userchats", res.user.uid), {
         chats: [],
       });
+
+      // Log out the user after sign-up
+      await signOut(auth);
 
       toast.success("Account created! You can Login now");
     } catch (err) {
@@ -94,7 +100,7 @@ const Login = () => {
         <h3>Create an Account</h3>
         <form onSubmit={handleRegister}>
           <label htmlFor="file">
-            <img src={avatar.url || avatar} alt="" />
+            <img src={avatar.url || avatarPNG} alt="" />
             Upload an Image
           </label>
           <input
